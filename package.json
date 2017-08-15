@@ -1,0 +1,29 @@
+{
+  "name": "nodelistener",
+  "version": "1.0.0",
+  "description": "Do something when a specific element changes the DOM tree where specified.",
+  "main": "nodelistener.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dkazmer/nodeListener.git"
+  },
+  "keywords": [
+    "plugin",
+    "node",
+    "element",
+    "exist",
+    "pop",
+    "html",
+    "javascript",
+    "DOM"
+  ],
+  "author": "Daniel Kazmer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkazmer/nodeListener/issues"
+  },
+  "homepage": "https://github.com/dkazmer/nodeListener"
+}

@@ -3,27 +3,19 @@
 /***********************************************************************************
 
 author:		Daniel Kazmer - http://webshifted.com
+version:	1.0.1
 created:	03.08.2017
-version:	1.0.0
+modified:	15.08.2017
 
 Do something when a specific element changes the DOM tree where specified.
 
+github:		https://github.com/dkazmer/nodeListener
+npm:		https://www.npmjs.com/package/nodelistener
+license:	MIT
+
 version history:
+	1.0.1	added nodeType checker (15.08.2017)
 	1.0.0	born; added logic in checkers for child nodes (03.08.2017)
-
-Accepted arguments:
-	@selector String: CSS selector
-	@target Element: element within which to listen
-	@callback Function: do something on success (returns 2 args)
-
-usage:
-	nodeListener('#selector', targetElem, callback);
-	var myObserver = nodeListener('#selector', targetElem, function(nodesAddedArray, nodesRemovedArray){
-		if (nodesAddedArray[0]){
-			alert('Found!');
-			myObserver.disconnect();
-		}
-	});
 
 ***********************************************************************************/
 
@@ -35,15 +27,17 @@ function nodeListener(selector, target, callback){
 
 	var checkAddedNodes = function(arr){
 		for (var i = 0; i < arr.length; i++){
-			if (arr[i].matches(selector)){	// parent doesn't match selector (or course)
-				isFound = true;
-				aNodes.push(arr[i]);
-			} else if (arr[i].querySelectorAll(selector).length > 0){
-				// if child matches exist
-				isFound = true;
-				var arrChildren = arr[i].querySelectorAll(selector);
-				for (var j = 0; j < arrChildren.length; j++){
-					aNodes.push(arrChildren[j]);
+			if (arr[i].nodeType === 1){	// ensure ELEMENT_NODE
+				if (arr[i].matches(selector)){	// parent doesn't match selector (or course)
+					isFound = true;
+					aNodes.push(arr[i]);
+				} else if (arr[i].querySelectorAll(selector).length > 0){
+					// if child matches exist
+					isFound = true;
+					var arrChildren = arr[i].querySelectorAll(selector);
+					for (var j = 0; j < arrChildren.length; j++){
+						aNodes.push(arrChildren[j]);
+					}
 				}
 			}
 		}
@@ -51,7 +45,7 @@ function nodeListener(selector, target, callback){
 
 	var checkRemovedNode = function(el){
 		// enabled subtree to get kids
-		if (el.matches(selector)){
+		if (el.nodeType === 1 && el.matches(selector)){
 			isRemoved = true;
 			rNodes.push(el);
 		}
