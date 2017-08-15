@@ -1,6 +1,6 @@
 {
   "name": "nodelistener",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Do something when a specific element changes the DOM tree where specified.",
   "main": "nodelistener.js",
   "scripts": {
