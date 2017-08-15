@@ -4,7 +4,7 @@ Do something when a specific element changes the DOM tree where specified.
 This plugin is designed to make use of [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver)
 and to make it much easier for developers to "react to changes in a DOM." This eliminates the need to use performance-hindering looping timeouts or intervals!
 
-It's a simple function that accepts 3 parameters: a CSS selector (string - what you're observing), an node (element - where you're observing it), and a callback function. The callback will return 2 arguments: each of them an array of elements that match your critera.
+It's a simple function that accepts 3 parameters: a CSS selector (string - what you're observing), a node (element - where you're observing it), and a callback function. The callback will return 2 arguments: each of them an array of elements that match your critera.
 
 It incorporates the use of `Element.matches()` and `Element.querySelectorAll()`, both native to Javascript. This plugin is standalone and requires no dependency.
 
