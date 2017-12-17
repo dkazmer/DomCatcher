@@ -25,25 +25,23 @@ function nodeListener(selector, target, callback){
 		isFound = false,
 		isRemoved = false;
 
-	var checkAddedNodes = function(arr){
-		for (var i = 0; i < arr.length; i++){
-			if (arr[i].nodeType === 1){	// ensure ELEMENT_NODE
-				if (arr[i].matches(selector)){	// parent doesn't match selector (of course)
+	const CHECK_ADDED_NODES = arr => {
+		arr.forEach(item => {
+			if (item.nodeType === 1){	// ensure ELEMENT_NODE
+				if (item.matches(selector)){	// parent doesn't match selector (of course)
 					isFound = true;
-					aNodes.push(arr[i]);
-				} else if (arr[i].querySelectorAll(selector).length > 0){
+					aNodes.push(item);
+				} else if (item.querySelectorAll(selector).length > 0){
 					// if child matches exist
 					isFound = true;
-					var arrChildren = arr[i].querySelectorAll(selector);
-					for (var j = 0; j < arrChildren.length; j++){
-						aNodes.push(arrChildren[j]);
-					}
+					let arrChildren = item.querySelectorAll(selector);
+					arrChildren.forEach(child => aNodes.push(child));
 				}
 			}
-		}
+		});
 	};
 
-	var checkRemovedNode = function(el){
+	const CHECK_REMOVED_NODES = el => {
 		// enabled subtree to get kids
 		if (el.nodeType === 1 && el.matches(selector)){
 			isRemoved = true;
@@ -52,22 +50,22 @@ function nodeListener(selector, target, callback){
 	};
 
 	// create an observer instance
-	var observer = new MutationObserver(function(mutations){
-		mutations.forEach(function(mutation){
+	var observer = new MutationObserver(mutations => {
+		mutations.forEach(mutation => {
 			// added nodes
 			if (mutation.addedNodes.length > 0)
-				checkAddedNodes(mutation.addedNodes);
+				CHECK_ADDED_NODES(mutation.addedNodes);
 
 			// removed nodes
 			if (mutation.removedNodes.length > 0)	// length never exceeds 1
-				checkRemovedNode(mutation.removedNodes[0]);
+				CHECK_REMOVED_NODES(mutation.removedNodes[0]);
 		});
 
 		if (isFound || isRemoved)
 			callback(aNodes, rNodes);
 
 		// clear
-		setTimeout(function(){
+		setTimeout(() => {
 			aNodes = [];
 			rNodes = [];
 			isFound = false;
@@ -76,13 +74,13 @@ function nodeListener(selector, target, callback){
 	});
 
 	// configuration of the observer:
-	var config = { 'attributes': true, 'childList': true, 'characterData': true, 'subtree': true };
+	const CONFIG = { 'attributes': true, 'childList': true, 'characterData': true, 'subtree': true };
 
-	// config.attributeOldValue = true; config.characterDataOldValue = true;
-	// config.attributeFilter = [];
+	// CONFIG.attributeOldValue = true; CONFIG.characterDataOldValue = true;
+	// CONFIG.attributeFilter = [];
 
 	// pass in the target node, as well as the observer options
-	observer.observe(target, config);
+	observer.observe(target, CONFIG);
 
 	// to disconnect at any time
 	return observer;
