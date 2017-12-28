@@ -3,9 +3,9 @@
 /***********************************************************************************
 
 author:		Daniel Kazmer - http://webshifted.com
-version:	1.0.1
+version:	1.0.2
 created:	03.08.2017
-modified:	15.08.2017
+modified:	18.12.2017
 
 Do something when a specific element changes the DOM tree where specified.
 
@@ -14,6 +14,7 @@ npm:		https://www.npmjs.com/package/nodelistener
 license:	MIT
 
 version history:
+	1.0.2	removed extraneous "found" & "removed" variables (18.12.2017)
 	1.0.1	added nodeType checker (15.08.2017)
 	1.0.0	born; added logic in checkers for child nodes (03.08.2017)
 
@@ -22,18 +23,14 @@ version history:
 function nodeListener(selector, target, callback){
 	var aNodes = [],	// added nodes
 		rNodes = [],	// removed nodes
-		isFound = false,
-		isRemoved = false;
 
 	const CHECK_ADDED_NODES = arr => {
 		arr.forEach(item => {
 			if (item.nodeType === 1){	// ensure ELEMENT_NODE
 				if (item.matches(selector)){	// parent doesn't match selector (of course)
-					isFound = true;
 					aNodes.push(item);
 				} else if (item.querySelectorAll(selector).length > 0){
 					// if child matches exist
-					isFound = true;
 					let arrChildren = item.querySelectorAll(selector);
 					arrChildren.forEach(child => aNodes.push(child));
 				}
@@ -44,7 +41,6 @@ function nodeListener(selector, target, callback){
 	const CHECK_REMOVED_NODES = el => {
 		// enabled subtree to get kids
 		if (el.nodeType === 1 && el.matches(selector)){
-			isRemoved = true;
 			rNodes.push(el);
 		}
 	};
@@ -61,15 +57,13 @@ function nodeListener(selector, target, callback){
 				CHECK_REMOVED_NODES(mutation.removedNodes[0]);
 		});
 
-		if (isFound || isRemoved)
+		if (aNodes.length > 0 || rNodes.length > 0)
 			callback(aNodes, rNodes);
 
 		// clear
 		setTimeout(() => {
 			aNodes = [];
 			rNodes = [];
-			isFound = false;
-			isRemoved = false;
 		}, 0);
 	});
 
