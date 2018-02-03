@@ -1,8 +1,8 @@
 {
   "name": "nodelistener",
-  "version": "1.0.1",
-  "description": "Do something when a specific element changes the DOM tree where specified.",
-  "main": "nodelistener.js",
+  "version": "3.0.0",
+  "description": "React to specific changes in the DOM tree.",
+  "main": "nodeListener.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +18,10 @@
     "pop",
     "html",
     "javascript",
-    "DOM"
+    "DOM",
+    "listener",
+    "observer",
+    "mutation"
   ],
   "author": "Daniel Kazmer",
   "license": "MIT",

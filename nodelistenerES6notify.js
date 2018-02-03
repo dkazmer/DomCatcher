@@ -3,9 +3,9 @@
 /***********************************************************************************
 
 author:		Daniel Kazmer - http://webshifted.com
-version:	2.0.0
+version:	3.0.0
 created:	03.08.2017
-modified:	17.12.2017
+modified:	03.02.2018
 
 React to a change in the DOM. (Do something when a specific element changes the DOM tree where specified.)
 This iteration of nodeListener ES6/obey (observe.obey) is experimental; use with caution.
@@ -15,6 +15,7 @@ npm:		https://www.npmjs.com/package/nodelistener
 license:	MIT
 
 version history:
+	3.0.0	removed 'obey' method to favour 'on' & 'then' methods, the former accepting 2 params: event type & callback
 	2.0.0	added 'obey' method to MutationObserver's prototype; target param now optional: default is document.body (17.12.2017)
 	1.0.1	added nodeType checker (15.08.2017)
 	1.0.0	born; added logic in checkers for child nodes (03.08.2017)
@@ -22,8 +23,10 @@ version history:
 ***********************************************************************************/
 
 function nodeListener(selector, target){
-	var aNodes = [],	// added nodes
-		rNodes = [];	// removed nodes
+	var aNodes	= [],	// added nodes
+		rNodes	= [],	// removed nodes
+		stamp	= Math.round((new Date()).getTime() / 1000),	// unix
+		eventID	= 'nodeListenerEvent.' + selector + stamp;		// try to make it super unique to minimize risk of conflict
 
 	const CHECK_ADDED_NODES = arr => {
 		arr.forEach(item => {
@@ -44,6 +47,18 @@ function nodeListener(selector, target){
 		if (el.nodeType === 1 && el.matches(selector)) rNodes.push(el);
 	};
 
+	const DISPATCH_EVENTS = () => {
+		if (aNodes.length > 0 || rNodes.length > 0){
+			document.dispatchEvent(event);
+
+			if (aNodes.length > 0)
+				document.dispatchEvent(eventAdd);
+
+			if (rNodes.length > 0)
+				document.dispatchEvent(eventRemove);
+		}
+	};
+
 	// create an observer instance
 	var observer = new MutationObserver(mutations => {
 		mutations.forEach(mutation => {
@@ -56,8 +71,7 @@ function nodeListener(selector, target){
 				CHECK_REMOVED_NODES(mutation.removedNodes[0]);
 		});
 
-		if (aNodes.length > 0 || rNodes.length > 0)
-			document.dispatchEvent(event);
+		DISPATCH_EVENTS();
 
 		// clear
 		setTimeout(() => {
@@ -66,14 +80,31 @@ function nodeListener(selector, target){
 		}, 0);
 	});
 
-	// create 'obey' method & associated event listener
-	const event = new Event('nodeListenerEvent'+selector);
+	// create 'on' method & associated event listener
+	const event			= new Event(eventID);			// then
+	const eventAdd		= new Event(eventID+'.add');	// on add
+	const eventRemove	= new Event(eventID+'.remove');	// on remove
 
 	{
-		let callback = null;
-		let notifier = fn => callback = fn;
-		document.addEventListener('nodeListenerEvent'+selector, () => callback.call(observer, aNodes, rNodes));
-		MutationObserver.prototype.obey = notifier;
+		const notifierOn = (t, fn) => {
+			const set = (eID, fn2) => document.addEventListener(eID, fn2);
+
+			switch (t){	// type
+				case 'add': set(eventID+'.add', () => fn.call(observer, aNodes)); break;
+				case 'remove': set(eventID+'.remove', () => fn.call(observer, rNodes)); break;
+				default: console.warn('nodeListener: unaccepted or no event specified for \'on\' method'); observer.disconnect();
+			}
+		};
+
+		const notifierThen = fn => {
+			if (fn instanceof Function)
+				document.addEventListener(eventID, () => fn.call(observer, aNodes, rNodes));
+			else
+				console.warn('nodeListener: \'then\' method only accepts a function');
+		};
+
+		MutationObserver.prototype.then	= notifierThen;
+		MutationObserver.prototype.on	= notifierOn;
 	}
 
 	// configuration of the observer:
