@@ -92,7 +92,7 @@ function nodeListener(selector, target){
 			switch (t){	// type
 				case 'add': set(eventID+'.add', () => fn.call(observer, aNodes)); break;
 				case 'remove': set(eventID+'.remove', () => fn.call(observer, rNodes)); break;
-				default: console.warn('nodeListener: unaccepted or no event specified for \'on\' method'); observer.disconnect();
+				default: console.warn('nodeListener: unaccepted or no event specified for \'on\' method'); setTimeout(() => observer.disconnect(), 0);
 			}
 		};
 
