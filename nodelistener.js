@@ -7,7 +7,10 @@ version:	1.0.2
 created:	03.08.2017
 modified:	18.12.2017
 
-Do something when a specific element changes the DOM tree where specified.
+React to specific changes in the DOM tree.
+This plugin makes use of [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) and is designed to make it much easier for developers to "react to changes in a DOM;" eliminating the need to use performance-hindering intervals and recursive timeouts!
+A function that accepts 3 parameters: a CSS selector (string - what you're observing), a node (element - where you're observing it), and a callback function. The callback will return 2 arguments: each of them an array of elements that match your criteria.
+It incorporates the use of `Element.matches()` and `Element.querySelectorAll()`, both native to Javascript. This plugin is standalone and requires no dependency.
 
 github:		https://github.com/dkazmer/nodeListener
 npm:		https://www.npmjs.com/package/nodelistener
