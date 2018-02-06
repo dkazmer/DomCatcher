@@ -2,20 +2,19 @@
 
 /***********************************************************************************
 
-author:		Daniel Kazmer - http://webshifted.com
+author:		Daniel B. Kazmer (webshifted.com)
 version:	3.0.0
 created:	03.08.2017
 modified:	03.02.2018
 
 React to a change in the DOM. (Do something when a specific element changes the DOM tree where specified.)
-This iteration of nodeListener ES6/obey (observe.obey) is experimental; use with caution.
 
 github:		https://github.com/dkazmer/nodeListener
 npm:		https://www.npmjs.com/package/nodelistener
 license:	MIT
 
 version history:
-	3.0.0	removed 'obey' method to favour 'on' & 'then' methods, the former accepting 2 params: event type & callback
+	3.0.0	removed 'obey' method to favour 'on' & 'then' methods, the former accepting 2 params: event type & callback (03.02.2018)
 	2.0.0	added 'obey' method to MutationObserver's prototype; target param now optional: default is document.body (17.12.2017)
 	1.0.1	added nodeType checker (15.08.2017)
 	1.0.0	born; added logic in checkers for child nodes (03.08.2017)
