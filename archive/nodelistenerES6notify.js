@@ -14,7 +14,7 @@ npm:		https://www.npmjs.com/package/nodelistener
 license:	MIT
 
 version history:
-	3.1.0	removed event listeners (07.02.2018)
+	3.1.0	removed event listeners for better, non-conflicting callback handling (07.02.2018)
 	3.0.0	removed 'obey' method to favour 'on' & 'then' methods, the former accepting 2 params: event type & callback (03.02.2018)
 	2.0.0	added 'obey' method to MutationObserver's prototype; target param now optional: default is document.body (17.12.2017)
 	1.0.1	added nodeType checker (15.08.2017)
@@ -49,7 +49,7 @@ function nodeListener(selector, target){
 	};
 
 	const FIRE = () => {
-		if (callback !== null && (aNodes.length > 0  || rNodes.length > 0)){
+		if (callback !== null && (aNodes.length > 0 || rNodes.length > 0)){
 			if (type === 'add' && aNodes.length > 0 ||
 				type === 'remove' && rNodes.length > 0 ||
 				type === null)
@@ -61,11 +61,11 @@ function nodeListener(selector, target){
 	var observer = new MutationObserver(mutations => {
 		mutations.forEach(mutation => {
 			// added nodes
-			if (mutation.addedNodes.length > 0)
+			if (mutation.addedNodes.length > 0 && type !== 'remove')
 				CHECK_ADDED_NODES(mutation.addedNodes);
 
 			// removed nodes
-			if (mutation.removedNodes.length > 0)	// length never exceeds 1
+			if (mutation.removedNodes.length > 0 && type !== 'add')	// length never exceeds 1
 				CHECK_REMOVED_NODES(mutation.removedNodes[0]);
 		});
 

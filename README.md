@@ -1,25 +1,37 @@
-# nodeListener
+# NodeWatcher
 React to specific changes in the DOM tree.
 
-This plugin makes use of [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) and is designed to make it much easier for developers to "react to changes in a DOM;" eliminating the need to use performance-hindering intervals or recursive timeouts!
+```js
+new NodeWatcher('.my-selector');
+```
 
-Accepts two parameters: a CSS selector (string - what you're observing - required), and a node (ancestral element - where you're observing it - optional). The second param defaults to `document.body`, but it's recommended to narrow the observer scope when possible. And in most cases it's best to set this up _after_ your page has rendered.
+NodeWatcher wraps [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) and makes it user friendly and actually usable. It's designed to make it much easier for developers to "react to changes in a DOM;" eliminating the need to use performance-hindering intervals or recursive timeouts!
 
-It incorporates the use of `Element.matches()` and `Element.querySelectorAll()`, both native to Javascript. No dependencies.
+
+### Parameters
+Param. | Type | Desc. | Required
+--- | --- | --- | ---
+(1) CSS selector | String | what you're observing | yes
+(2) Node | HTMLElement | ancestral element - where you're observing it (defaults to `document.body`) | no
+
+It __is__ recommended to narrow the observer scope when possible. And in most cases it's best to set this up _after_ your page has rendered.
+
 
 ### Methods
 - `then` : accepts only a callback, which returns both added and removed sets of elements in separate arrays in two arguments; also returns observer context `this`.
 
 - `on` : accepts two parameters: 1. event string (`add` or `remove`), and 2. callback, which returns one set of elements as an array; also returns observer context `this`.
 
+- `destroy` : disconnects the observer and destroys the wrapper instance.
+
 
 ### Usage
 ```js
 // example 1
-nodeListener('.selector', parentElem).then((added, removed) => {});
+new NodeWatcher('.selector', parentElem).then((added, removed) => {});
 
 // example 2
-let myObserver = nodeListener('#selector', parentElem);
+let myObserver = new NodeWatcher('#selector', parentElem);
 
 myObserver.on('add', addedArray => {
 	if (addedArray[0]){
@@ -29,11 +41,11 @@ myObserver.on('add', addedArray => {
 });
 
 // example 3
-nodeListener('#selector').on('remove', function(arr){
+new NodeWatcher('#selector').on('remove', function(arr){
 	if (arr.length > 0) this.disconnect();
 });
 ```
 
 
 ### Browser Support
-This plugin is coded in ES6 Javascript. Version 3 is supported by modern browsers only. **For IE support use v1.x**; a polyfill for `Element.matches()` may be required. Please note, v1.x doesn't have the `on` and `then` prototypes, but rather accepts a callback as the third parameter.
+Modern browsers only; that is, no IE support. (The era of the legacy browser is over!)
