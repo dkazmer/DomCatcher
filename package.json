@@ -1,32 +1,32 @@
 {
-  "name": "nodelistener",
-  "version": "3.1.0",
-  "description": "React to specific changes in the DOM tree.",
-  "main": "nodeListener.min.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dkazmer/nodeListener.git"
-  },
-  "keywords": [
-    "plugin",
-    "node",
-    "element",
-    "exist",
-    "pop",
-    "html",
-    "javascript",
-    "DOM",
-    "listener",
-    "observer",
-    "mutation"
-  ],
-  "author": "Daniel Kazmer",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dkazmer/nodeListener/issues"
-  },
-  "homepage": "https://github.com/dkazmer/nodeListener"
+	"name": "node-watcher",
+	"version": "4.0.0",
+	"description": "React to specific changes in the DOM tree.",
+	"main": "NodeWatcher.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dkazmer/NodeWatcher.git"
+	},
+	"keywords": [
+		"plugin",
+		"node",
+		"element",
+		"exist",
+		"pop",
+		"html",
+		"javascript",
+		"DOM",
+		"watcher",
+		"observer",
+		"mutation"
+	],
+	"author": "Daniel Kazmer",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/dkazmer/NodeWatcher/issues"
+	},
+	"homepage": "https://github.com/dkazmer/NodeWatcher"
 }
