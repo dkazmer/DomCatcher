@@ -19,7 +19,7 @@ It _is_ recommended to narrow the observer scope when possible. And in most case
 
 ### Methods
 - `then` : accepts only a callback, which receives both added and removed sets of elements in two arguments of arrays
-- `on` : accepts two parameters: 1. event string (`add` or `remove`), and 2. callback, which returns one set of elements as an array
+- `on` : accepts two parameters: 1. event string (`add` or `remove`), and 2. callback, which receives one set of elements as an array
 - `destroy` : disconnects the observer and destroys the wrapper instance
 
 
