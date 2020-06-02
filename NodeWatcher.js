@@ -9,10 +9,6 @@ modified:	31.05.2020
 
 React to a change in the DOM. (Do something when a specific element changes the DOM tree where specified.)
 
-github:		https://github.com/dkazmer/nodeWatcher
-npm:		https://www.npmjs.com/package/nodeWatcher
-license:	MIT
-
 version history:
 	4.0.0	renamed, modularized, class, re-did callbacks, general refactoring, added history tracker; added destroy method (31.05.2020)
 	3.1.0	removed event listeners for better, non-conflicting callback handling (07.02.2018)
