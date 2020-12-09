@@ -10,7 +10,7 @@ modified:	31.05.2020
 React to a change in the DOM. (Do something when a specific element changes the DOM tree where specified.)
 
 version history:
-	4.0.0	renamed, modularized, class, re-did callbacks, general refactoring, added history tracker; added destroy method (31.05.2020)
+	4.0.0	renamed, modularized, class, reworked callbacks, general refactoring, added history tracker; added destroy method (31.05.2020)
 	3.1.0	removed event listeners for better, non-conflicting callback handling (07.02.2018)
 	3.0.0	removed 'obey' method to favour 'on' & 'then' methods, the former accepting 2 params: event type & callback (03.02.2018)
 	2.0.0	added 'obey' method to MutationObserver's prototype; target param now optional: default is document.body (17.12.2017)
@@ -19,7 +19,7 @@ version history:
 
 ***********************************************************************************/
 
-export class NodeWatcher {
+export class DomCatcher {
 	constructor (selector, target) {
 		const aNodes	= [];	// added nodes
 		const rNodes	= [];	// removed nodes
@@ -57,7 +57,7 @@ export class NodeWatcher {
 					setTimeout(finish, 0);
 				}
 			}
-		}
+		};
 
 		const array = {
 			/**
@@ -120,8 +120,8 @@ export class NodeWatcher {
 			case 'add': case 'remove':
 				this.get.callbacks[name] = e => fn.call(this, e); break; // passing "this" provides context
 			default: {
-				console.warn('NodeWatcher.on: "'+name+'" is not an accepted event; stopped watching');
-				setTimeout(this.stopWatching, 0);
+				console.warn('DomCatcher.on: "'+name+'" is not an accepted event; stopped watching');
+				setTimeout(this.destroy.bind(this), 0);
 			}
 		}
 
@@ -132,7 +132,7 @@ export class NodeWatcher {
 		if (fn instanceof Function)
 			this.get.callbacks.then = (aNodes, rNodes) => fn.call(this, aNodes, rNodes);
 		else
-			console.warn('NodeWatcher.then: method only accepts a function');
+			console.warn('DomCatcher.then: method only accepts a function');
 
 		return this;
 	}
@@ -140,5 +140,9 @@ export class NodeWatcher {
 	destroy() {
 		this.get.watcher.disconnect();
 		for (let i in this) delete this[i];
+	}
+
+	get history() {
+		return this.get.history;
 	}
 }
