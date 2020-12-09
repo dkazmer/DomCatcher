@@ -1,4 +1,4 @@
-# DomCatcher
+# DOM Catcher
 React to specific changes in the DOM tree.
 
 ```js
